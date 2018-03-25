@@ -1,14 +1,30 @@
 const express = require('express');
 const router = express.Router();
 
-let responseJSON = {
-    'posts': []
-};
 
 /* GET blog listing. */
 router.get('/', (req, res) => {
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify(responseJSON));
+    res.json(['get']);
+});
+
+/* GET a given post */
+router.get('/:postId/', (req, res) => {
+    res.json(['getPostID']);
+});
+
+/* POST a new post */
+router.post('/', (req, res) => {
+    res.json(['post']);
+});
+
+/* UPDATE a post */
+router.put('/:postId/', (req, res) => {
+    res.json(['put']);
+});
+
+/* DELETE a post */
+router.delete('/:postId/', (req, res) => {
+    res.json(['del']);
 });
 
 module.exports = router;
