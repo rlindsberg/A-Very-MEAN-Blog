@@ -1,10 +1,7 @@
-FROM centos:6.6
+FROM rlind/centos:6.9.0
 MAINTAINER rlindsberg
 
-RUN yum -y update && yum clean all \
-   && yum -y install wget tar gcc which mtr nano
+# install easy_install
+RUN wget https://bootstrap.pypa.io/ez_setup.py -O - | python
 
-RUN rm -f /etc/localtime \
-    && ln -s /usr/share/zoneinfo/Stockholm /etc/localtime
-
-RUN yum -y install rsyslog
+CMD ["/bin/bash"]
