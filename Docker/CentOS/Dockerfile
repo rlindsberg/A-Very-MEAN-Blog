@@ -8,11 +8,13 @@ RUN wget https://bootstrap.pypa.io/ez_setup.py -O - | python
 
 # install supervisor
 RUN easy_install supervisor \
-    && mkdir -p /var/log/supervisor # make directory for storing logs \
+    # make directory for storing logs
+    && mkdir -p /var/log/supervisor \
     && mkdir -p /etc/supervisor/conf.d # for configuration file
 
 # configure supervisor
-RUN printf '[supervisord]\n' > /etc/supervisor/supervisord.conf \
+RUN cat /etc/supervisor/supervisord.conf \
+    && printf '[supervisord]\n' > /etc/supervisor/supervisord.conf \
     && printf 'nodaemon = true\n' >> /etc/supervisor/supervisord.conf \
     && printf 'logfile = /var/log/supervisor/supervisord.log\n' >> /etc/supervisor/supervisord.conf \
     && printf 'childlogdir = /var/log/supervisor\n' >> /etc/supervisor/supervisord.conf \
