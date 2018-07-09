@@ -13,8 +13,7 @@ RUN easy_install supervisor \
     && mkdir -p /etc/supervisor/conf.d # for configuration file
 
 # configure supervisor
-RUN cat /etc/supervisor/supervisord.conf \
-    && printf '[supervisord]\n' > /etc/supervisor/supervisord.conf \
+RUN printf '[supervisord]\n' > /etc/supervisor/supervisord.conf \
     && printf 'nodaemon = true\n' >> /etc/supervisor/supervisord.conf \
     && printf 'logfile = /var/log/supervisor/supervisord.log\n' >> /etc/supervisor/supervisord.conf \
     && printf 'childlogdir = /var/log/supervisor\n' >> /etc/supervisor/supervisord.conf \
