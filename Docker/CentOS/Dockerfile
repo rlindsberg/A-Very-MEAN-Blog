@@ -34,5 +34,12 @@ RUN ssh-keygen -q -N "" -t dsa -f /etc/ssh/ssh_host_dsa_key \
     && ssh-keygen -q -N "" -t rsa -f /etc/ssh/ssh_host_rsa_key \
     && sed -ri 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
 
+# add boot script
+RUN mkdir -p /opt \
+    && touch /opt/boot.sh \
+    && printf '#!/bin/bash\n\n' >> /opt/boot.sh \
+    && printf 'sleep 5\n' >> /opt/boot.sh \
+    && chmod u+rwx /opt/boot.sh
+
 
 CMD ["/bin/bash"]
