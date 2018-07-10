@@ -41,5 +41,7 @@ RUN mkdir -p /opt \
     && printf 'sleep 5\n' >> /opt/boot.sh \
     && chmod u+rwx /opt/boot.sh
 
+# open port 22
+EXPOSE 22
 
-CMD ["/bin/bash"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
