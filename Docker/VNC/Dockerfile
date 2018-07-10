@@ -9,8 +9,14 @@ RUN wget http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.r
     && yum groupinfo xfce \
     && yum -y groupinstall xfce
 
-COPY docker-entrypoint.sh /usr/local/bin/
+RUN printf "yIkAt1dI\nyIkAt1dI\n\n" | vncpasswd
 
-ENTRYPOINT ["docker-entrypoint.sh"]
+
+#COPY docker-entrypoint.sh /usr/local/bin/
+
+#ENTRYPOINT ["docker-entrypoint.sh"]
+
+EXPOSE 22
+EXPOSE 5901
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
