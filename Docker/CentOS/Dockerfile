@@ -25,5 +25,8 @@ RUN printf '[supervisord]\n' > /etc/supervisor/supervisord.conf \
     && printf '\n[program:setup]\n' >> /etc/supervisor/supervisord.conf \
     && printf 'command = /opt/boot.sh\n' >> /etc/supervisor/supervisord.conf
 
+# install sshd
+RUN yum install -y openssh-server openssh-clients passwd
+
 
 CMD ["/bin/bash"]
