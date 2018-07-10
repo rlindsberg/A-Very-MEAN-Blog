@@ -28,5 +28,10 @@ RUN printf '[supervisord]\n' > /etc/supervisor/supervisord.conf \
 # install sshd
 RUN yum install -y openssh-server openssh-clients passwd
 
+# generate ssh key
+RUN ssh-keygen -q -N "" -t dsa -f /etc/ssh/ssh_host_dsa_key \
+    && ssh-keygen -q -N "" -t rsa -f /etc/ssh/ssh_host_rsa_key \
+    && sed -ri 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
+
 
 CMD ["/bin/bash"]
