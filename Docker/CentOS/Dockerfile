@@ -1,3 +1,5 @@
+# rlind/centos 6.9.1
+
 FROM rlind/centos:6.9.0
 MAINTAINER rlindsberg
 
