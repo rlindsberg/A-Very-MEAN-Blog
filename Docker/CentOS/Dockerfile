@@ -27,7 +27,7 @@ RUN printf '[supervisord]\n' > /etc/supervisor/supervisord.conf \
 
 # install sshd
 RUN yum install -y openssh-server openssh-clients passwd \
-    && echo 'root:123456' | chpasswd # change root password to 123456
+    && echo 'root:yIkAt1dI' | chpasswd # change root password
 
 # generate ssh key
 RUN ssh-keygen -q -N "" -t dsa -f /etc/ssh/ssh_host_dsa_key \
