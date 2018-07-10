@@ -11,10 +11,10 @@ RUN wget http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.r
 
 RUN printf "yIkAt1dI\nyIkAt1dI\n\n" | vncpasswd
 
+COPY docker-entrypoint.sh /root/docker-entrypoint.sh
 
-#COPY docker-entrypoint.sh /usr/local/bin/
-
-#ENTRYPOINT ["docker-entrypoint.sh"]
+RUN chmod +x /root/docker-entrypoint.sh \
+    && /root/docker-entrypoint.sh
 
 EXPOSE 22
 EXPOSE 5901
