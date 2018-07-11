@@ -1,12 +1,12 @@
 FROM rlind/centos:6.9.1
 MAINTAINER rlindsberg
 
-RUN yum -y install tigervnc-server wine
-
 RUN cd ~ \
     && wget http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm \
     && rpm -ivh epel-release-6-8.noarch.rpm \
-    && yum grouplist xfce \
+    && yum -y install tigervnc-server wine
+
+RUN yum grouplist xfce \
     && yum groupinfo xfce \
     && yum -y groupinstall xfce
 
