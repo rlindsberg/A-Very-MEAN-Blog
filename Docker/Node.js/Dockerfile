@@ -84,11 +84,18 @@ ENV PATH $PATH:$GHOST_INSTALL/current/node_modules/knex-migrator/bin
 
 
 RUN cd /var/www/ghost/current \
-    && knex-migrator init \
-    && npm start
+    && knex-migrator init
+
+RUN cd /var/www/ghost/current \
+    && npm install -g pm2 \
+    && echo "export NODE_ENV=production" >> ~/.profile \
+    && source ~/.profile
+
 
 EXPOSE 22
 EXPOSE 80
+EXPOSE 2368
 EXPOSE 5901
+
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
