@@ -91,10 +91,13 @@ RUN cd /var/www/ghost/current \
     && echo "export NODE_ENV=production" >> ~/.profile \
     && source ~/.profile
 
+RUN yum install -y nginx
+
+COPY lindsberget.se.conf /etc/nginx/conf.d/
+
 
 EXPOSE 22
 EXPOSE 80
-EXPOSE 2368
 EXPOSE 5901
 
 
