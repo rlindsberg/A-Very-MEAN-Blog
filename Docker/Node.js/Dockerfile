@@ -1,21 +1,19 @@
 FROM rlind/centos:6.9.1
 MAINTAINER rlindsberg
 
+# add EPEL repo and install vnc, wine and screen
 RUN cd ~ \
     && wget http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm \
     && rpm -ivh epel-release-6-8.noarch.rpm \
-    && yum -y install tigervnc-server wine
+    && yum -y install tigervnc-server wine screen
 
+# install desktop
 RUN yum grouplist xfce \
     && yum groupinfo xfce \
     && yum -y groupinstall xfce
 
+# setup VNC server and Gomez. Should log in to container and run vncserver start
 RUN printf "yktdIAI1\nyktdIAI1\n\n" | vncpasswd
-
-COPY docker-entrypoint.sh /root/docker-entrypoint.sh
-
-RUN chmod +x /root/docker-entrypoint.sh \
-    && /root/docker-entrypoint.sh
 
 # install node and ghost
 RUN yum install -y gcc-c++ make \
@@ -25,14 +23,7 @@ RUN yum install -y gcc-c++ make \
     && node -v \
     && npm -v # upgrade npm@5.6.0 to 6.1.0, as of July 11th 2018
 
-RUN yum install -y unzip \
-    && mkdir -p /var/www/ \
-    && cd /var/www/ \
-    && curl -L -O https://ghost.org/zip/ghost-latest.zip \
-    && unzip -d ghost ghost-latest.zip \
-    && cd ghost \
-    && npm install --production
-
+# install Ghost
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION 1.10
 
@@ -51,11 +42,8 @@ RUN npm install -g "ghost-cli@$GHOST_CLI_VERSION"
 ENV GHOST_INSTALL /var/www/ghost
 ENV GHOST_CONTENT /var/www/ghost/content
 
-RUN adduser node
-
-RUN rm -rf /var/www/ghost/*
-
-RUN set -ex; \
+RUN adduser node \
+  && set -ex; \
 	mkdir -p "$GHOST_INSTALL"; \
 	chown node:node "$GHOST_INSTALL"; \
 	\
@@ -82,17 +70,20 @@ RUN set -ex; \
 # we want these from the context of Ghost's "node_modules" directory (instead of doing "npm install -g knex-migrator") so they can share the DB driver modules
 ENV PATH $PATH:$GHOST_INSTALL/current/node_modules/knex-migrator/bin
 
-
+# init npm module
 RUN cd /var/www/ghost/current \
     && knex-migrator init
 
+# install and configure pm2. Should run in container cd /var/www/ghost/current && pm2 start index.js --name ghost
 RUN cd /var/www/ghost/current \
     && npm install -g pm2 \
     && echo "export NODE_ENV=production" >> ~/.profile \
     && source ~/.profile
 
+# install and nginx
 RUN yum install -y nginx
 
+## setup nginx reverse proxy
 COPY lindsberget.se.conf /etc/nginx/conf.d/
 
 
